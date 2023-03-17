@@ -8,10 +8,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
-  ImageBackground,
   TouchableWithoutFeedback,
   Keyboard,
-  Dimensions,
 } from "react-native";
 
 const LoginScreen = () => {
@@ -40,53 +38,42 @@ const LoginScreen = () => {
 
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
-      <View style={styles.container}>
-        <ImageBackground
-          style={styles.image}
-          source={require("../assets/images/Photo%20BG.jpg")}
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+      >
+        <View
+          style={{
+            ...styles.form,
+            marginBottom: isShowKeyboard ? -200 : 0,
+          }}
         >
-          <View>
-            <KeyboardAvoidingView
-              behavior={Platform.OS == "ios" ? "padding" : "height"}
-            >
-              <View
-                style={{
-                  ...styles.form,
-                  marginBottom: isShowKeyboard ? -200 : 0,
-                }}
-              >
-                <Text style={styles.title}>Войти</Text>
-                <TextInput
-                  value={email}
-                  onChangeText={emailHandler}
-                  placeholder="Адрес электронной почты"
-                  style={styles.input}
-                  onFocus={onFocus}
-                />
-                <TextInput
-                  value={password}
-                  onChangeText={passwordHandler}
-                  placeholder="Пароль"
-                  secureTextEntry={true}
-                  style={styles.input}
-                  onFocus={onFocus}
-                />
-
-                <TouchableOpacity
-                  style={styles.btn}
-                  activeOpacity={0.7}
-                  onPress={onLogin}
-                >
-                  <Text style={styles.btnText}>Войти</Text>
-                </TouchableOpacity>
-                <Text style={styles.text}>
-                  Нет аккаунта? Зарегистрироваться
-                </Text>
-              </View>
-            </KeyboardAvoidingView>
-          </View>
-        </ImageBackground>
-      </View>
+          <Text style={styles.title}>Войти</Text>
+          <TextInput
+            value={email}
+            onChangeText={emailHandler}
+            placeholder="Адрес электронной почты"
+            style={styles.input}
+            onFocus={onFocus}
+          />
+          <TextInput
+            value={password}
+            onChangeText={passwordHandler}
+            placeholder="Пароль"
+            secureTextEntry={true}
+            style={styles.input}
+            onFocus={onFocus}
+          />
+          <TouchableOpacity
+            style={styles.btn}
+            activeOpacity={0.7}
+            onPress={onLogin}
+          >
+            <Text style={styles.btnText}>Войти</Text>
+          </TouchableOpacity>
+          <Text style={styles.text}>Нет аккаунта? Зарегистрироваться</Text>
+        </View>
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 };
@@ -96,11 +83,6 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-  },
-  image: {
-    flex: 1,
-    resizeMode: "cover",
     justifyContent: "flex-end",
   },
   form: {
@@ -124,8 +106,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Roboto-Bold",
     fontSize: 30,
-
-    marginTop: 92,
+    marginTop: 32,
     marginBottom: 32,
   },
   btn: {
@@ -143,7 +124,6 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Regulat",
     fontSize: 16,
   },
-
   text: {
     textAlign: "center",
     marginBottom: 111,

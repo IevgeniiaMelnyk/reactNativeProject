@@ -8,7 +8,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
-  ImageBackground,
   TouchableWithoutFeedback,
   Keyboard,
   Dimensions,
@@ -58,70 +57,62 @@ const RegistrationScreen = () => {
 
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
-      <View style={styles.container}>
-        <ImageBackground
-          style={styles.image}
-          source={require("../assets/images/Photo%20BG.jpg")}
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+      >
+        <View
+          style={{
+            ...styles.form,
+            marginBottom: isShowKeyboard ? -140 : 0,
+          }}
         >
-          <View>
-            <KeyboardAvoidingView
-              behavior={Platform.OS == "ios" ? "padding" : "height"}
-            >
-              <View
-                style={{
-                  ...styles.form,
-                  marginBottom: isShowKeyboard ? -140 : 0,
-                }}
+          <View style={styles.avatarBox}>
+            <View style={styles.avatar}>
+              <TouchableOpacity
+                style={styles.btnPlus}
+                activeOpacity={0.7}
+                onPress={onLogin}
               >
-                <View style={styles.avatarBox}>
-                  <View style={styles.avatar}>
-                    <TouchableOpacity
-                      style={styles.btnPlus}
-                      activeOpacity={0.7}
-                      onPress={onLogin}
-                    >
-                      <Text style={styles.btnPlusText}>+</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-
-                <Text style={styles.title}>Регистрация</Text>
-                <TextInput
-                  value={login}
-                  onChangeText={loginHandler}
-                  placeholder="Логин"
-                  style={styles.input}
-                  onFocus={onFocus}
-                />
-                <TextInput
-                  value={email}
-                  onChangeText={emailHandler}
-                  placeholder="Адрес электронной почты"
-                  style={styles.input}
-                  onFocus={onFocus}
-                />
-                <TextInput
-                  value={password}
-                  onChangeText={passwordHandler}
-                  placeholder="Пароль"
-                  secureTextEntry={true}
-                  style={styles.input}
-                  onFocus={onFocus}
-                />
-
-                <TouchableOpacity
-                  style={styles.btn}
-                  activeOpacity={0.7}
-                  onPress={onLogin}
-                >
-                  <Text style={styles.btnText}>Зарегистрироваться</Text>
-                </TouchableOpacity>
-                <Text style={styles.text}>Уже есть аккаунт? Войти</Text>
-              </View>
-            </KeyboardAvoidingView>
+                <Text style={styles.btnPlusText}>+</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </ImageBackground>
-      </View>
+
+          <Text style={styles.title}>Регистрация</Text>
+          <TextInput
+            value={login}
+            onChangeText={loginHandler}
+            placeholder="Логин"
+            style={styles.input}
+            onFocus={onFocus}
+          />
+          <TextInput
+            value={email}
+            onChangeText={emailHandler}
+            placeholder="Адрес электронной почты"
+            style={styles.input}
+            onFocus={onFocus}
+          />
+          <TextInput
+            value={password}
+            onChangeText={passwordHandler}
+            placeholder="Пароль"
+            secureTextEntry={true}
+            style={styles.input}
+            onFocus={onFocus}
+          />
+
+          <TouchableOpacity
+            style={styles.btn}
+            activeOpacity={0.7}
+            onPress={onLogin}
+          >
+            <Text style={styles.btnText}>Зарегистрироваться</Text>
+          </TouchableOpacity>
+          <Text style={styles.text}>Уже есть аккаунт? Войти</Text>
+        </View>
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 };
@@ -131,11 +122,6 @@ export default RegistrationScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-  },
-  image: {
-    flex: 1,
-    resizeMode: "cover",
     justifyContent: "flex-end",
   },
   form: {

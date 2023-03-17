@@ -1,33 +1,62 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import * as Font from "expo-font";
-import AppLoading from "expo-app-loading";
+import * as SplashScreen from "expo-splash-screen";
+import { View, ImageBackground, StyleSheet } from "react-native";
 import RegistrationScreen from "./Screens/RegistrationScreen";
 import LoginScreen from "./Screens/LoginScreen";
 
-const loadApplication = async () => {
-  await Font.loadAsync({
-    "Roboto-Regulat": require("./assets/fonts/Roboto/Roboto-Regular.ttf"),
-    "Roboto-Bold": require("./assets/fonts/Roboto/Roboto-Bold.ttf"),
-  });
-};
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-  const [isReady, setIsReady] = useState(false);
+  const [appIsReady, setAppIsReady] = useState(false);
+  const [register, setRegister] = useState(false);
 
-  if (!isReady) {
-    return (
-      <AppLoading
-        startAsync={loadApplication}
-        onFinish={() => setIsReady(true)}
-        onError={console.warn}
-      />
-    );
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await Font.loadAsync({
+          "Roboto-Regulat": require("./assets/fonts/Roboto/Roboto-Regular.ttf"),
+          "Roboto-Bold": require("./assets/fonts/Roboto/Roboto-Bold.ttf"),
+        });
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setAppIsReady(true);
+      }
+    }
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    return null;
   }
 
   return (
-    <>
-      {/* <RegistrationScreen /> */}
-      <LoginScreen />
-    </>
+    <View style={styles.container} onLayout={onLayoutRootView}>
+      <ImageBackground
+        style={styles.image}
+        source={require("./assets/images/Photo%20BG.jpg")}
+      >
+        {!register && <RegistrationScreen />}
+        {register && <LoginScreen />}
+      </ImageBackground>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+  },
+});
