@@ -1,15 +1,15 @@
 import React, { useState, useCallback, useEffect } from "react";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { View, ImageBackground, StyleSheet } from "react-native";
-import RegistrationScreen from "./Screens/RegistrationScreen";
-import LoginScreen from "./Screens/LoginScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { View } from "react-native";
 
 SplashScreen.preventAutoHideAsync();
 
+import { useRoute } from "./router";
+
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
-  const [register, setRegister] = useState(false);
 
   useEffect(() => {
     async function prepare() {
@@ -37,26 +37,14 @@ export default function App() {
     return null;
   }
 
+  const routing = useRoute();
+
   return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
-      <ImageBackground
-        style={styles.image}
-        source={require("./assets/images/Photo%20BG.jpg")}
-      >
-        {!register && <RegistrationScreen />}
-        {register && <LoginScreen />}
-      </ImageBackground>
+    <View
+      style={{ flex: 1, backgroundColor: "#fff" }}
+      onLayout={onLayoutRootView}
+    >
+      <NavigationContainer>{routing}</NavigationContainer>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-  image: {
-    flex: 1,
-    resizeMode: "cover",
-  },
-});

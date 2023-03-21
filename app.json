@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "reactNativeProject1",
-    "slug": "reactNativeProject1",
+    "name": "reactNativeProject",
+    "slug": "reactNativeProject",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
