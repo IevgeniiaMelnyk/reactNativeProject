@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
-  Alert,
   TouchableWithoutFeedback,
   Keyboard,
   ImageBackground,
+  Image,
 } from "react-native";
 
 const RegistrationScreen = ({ navigation, route }) => {
@@ -18,6 +18,7 @@ const RegistrationScreen = ({ navigation, route }) => {
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
   const [hidePass, setHidePass] = useState(true);
 
   const loginHandler = (text) => setLogin(text);
@@ -25,11 +26,16 @@ const RegistrationScreen = ({ navigation, route }) => {
   const passwordHandler = (text) => setPassword(text);
 
   const onLogin = () => {
-    const user = { login, email, password };
-    setLogin("");
-    setEmail("");
-    setPassword("");
-    navigation.navigate("Home", { screen: "Posts", params: user });
+    if (login.trim() === "" || email.trim() === "" || password.trim() === "") {
+      setError("Пожалуйста, заполните все поля для ввода");
+    } else {
+      setError(null);
+      const user = { login, email, password };
+      setLogin("");
+      setEmail("");
+      setPassword("");
+      navigation.navigate("Home", { screen: "Posts", params: user });
+    }
   };
 
   const onFocus = () => {
@@ -59,12 +65,13 @@ const RegistrationScreen = ({ navigation, route }) => {
           >
             <View style={styles.avatarBox}>
               <View style={styles.avatar}>
-                <TouchableOpacity
-                  style={styles.btnPlus}
-                  activeOpacity={0.7}
-                  onPress={onLogin}
-                >
-                  <Text style={styles.btnPlusText}>+</Text>
+                <TouchableOpacity style={styles.btnPlus} activeOpacity={0.7}>
+                  <View>
+                    <Image
+                      source={require("../../assets/images/add.png")}
+                      style={{ width: 25, height: 25 }}
+                    />
+                  </View>
                 </TouchableOpacity>
               </View>
             </View>
@@ -99,6 +106,7 @@ const RegistrationScreen = ({ navigation, route }) => {
               >
                 <Text style={styles.passwordText}>Показать</Text>
               </TouchableOpacity>
+              {!!error && <Text style={styles.error}>{error}</Text>}
             </View>
             <TouchableOpacity
               style={styles.btn}
@@ -189,17 +197,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 80,
     left: 107,
-    alignItems: "center",
-    width: 25,
-    height: 25,
-    borderWidth: 1,
-    borderColor: "#FF6C00",
-    borderRadius: 100,
-    backgroundColor: "#fff",
-  },
-  btnPlusText: {
-    color: "#FF6C00",
-    fontSize: 16,
   },
   passwordBtn: {
     position: "absolute",
@@ -209,5 +206,12 @@ const styles = StyleSheet.create({
   passwordText: {
     fontFamily: "Roboto-Regulat",
     fontSize: 16,
+  },
+  error: {
+    textAlign: "center",
+    color: "red",
+    fontFamily: "Roboto-Regulat",
+    fontSize: 16,
+    marginTop: 10,
   },
 });

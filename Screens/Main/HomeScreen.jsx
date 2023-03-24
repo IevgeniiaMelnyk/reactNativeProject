@@ -23,12 +23,23 @@ const HomeScreen = ({ navigation }) => {
         tabBarStyle: {
           position: "absolute",
           height: 60,
-          paddingHorizontal: 60,
-          paddingVertical: 10,
+          paddingHorizontal: 70,
+          paddingTop: 10,
+          paddingBottom: 10,
           borderTopWidth: 1,
           borderColor: "#FFFFFF",
         },
         tabBarItemStyle: { borderRadius: 30 },
+        headerTitleStyle: {
+          textAlign: "center",
+          fontFamily: "Roboto-Bold",
+          fontSize: 17,
+        },
+        headerStyle: {
+          borderBottomWidth: 1,
+          borderColor: "#E8E8E8",
+          backgroundColor: "#FFFFFF",
+        },
       }}
     >
       <MainTab.Screen
@@ -37,16 +48,6 @@ const HomeScreen = ({ navigation }) => {
             <Feather name="grid" size={size} color={color} />
           ),
           title: "Публикации",
-          headerStyle: {
-            borderBottomWidth: 1,
-            borderColor: "#E8E8E8",
-            backgroundColor: "#FFFFFF",
-          },
-          headerTitleStyle: {
-            textAlign: "center",
-            fontFamily: "Roboto-Bold",
-            fontSize: 17,
-          },
           headerRight: () => (
             <TouchableWithoutFeedback
               onPress={() => navigation.navigate("Login")}
@@ -68,20 +69,11 @@ const HomeScreen = ({ navigation }) => {
           tabBarIcon: ({ focused, size, color }) => (
             <MaterialIcons name="add" size={size} color={color} />
           ),
+          // tabBarStyle: { display: "none" },
           title: "Создать публикацию",
-          headerStyle: {
-            borderBottomWidth: 1,
-            borderColor: "#E8E8E8",
-            backgroundColor: "#FFFFFF",
-          },
-          headerTitleStyle: {
-            textAlign: "center",
-            fontFamily: "Roboto-Bold",
-            fontSize: 17,
-          },
           headerLeft: () => (
             <TouchableWithoutFeedback
-              onPress={() => navigation.navigate("Home")}
+              onPress={() => navigation.navigate("Posts")}
             >
               <View style={{ paddingHorizontal: 15 }}>
                 <Image
@@ -91,6 +83,7 @@ const HomeScreen = ({ navigation }) => {
               </View>
             </TouchableWithoutFeedback>
           ),
+          tabBarStyle: { display: "none" },
         }}
         name="Create"
         component={CreatePostsScreen}
@@ -100,7 +93,7 @@ const HomeScreen = ({ navigation }) => {
           tabBarIcon: ({ focused, size, color }) => (
             <FontAwesome5 name="user" size={size} color={color} />
           ),
-          title: "",
+          headerShown: false,
         }}
         name="Profile"
         component={ProfileScreen}

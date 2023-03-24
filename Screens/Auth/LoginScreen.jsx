@@ -18,16 +18,22 @@ const LoginScreen = ({ navigation }) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
   const [hidePass, setHidePass] = useState(true);
 
   const emailHandler = (text) => setEmail(text);
   const passwordHandler = (text) => setPassword(text);
 
   const onLogin = () => {
-    const user = { email, password };
-    setEmail("");
-    setPassword("");
-    navigation.navigate("Home", { screen: "Posts", params: user });
+    if (email.trim() === "" || password.trim() === "") {
+      setError("Пожалуйста, заполните все поля для ввода");
+    } else {
+      setError(null);
+      const user = { email, password };
+      setEmail("");
+      setPassword("");
+      navigation.navigate("Home", { screen: "Posts", params: user });
+    }
   };
 
   const onFocus = () => {
@@ -80,6 +86,7 @@ const LoginScreen = ({ navigation }) => {
                 <Text style={styles.passwordText}>Показать</Text>
               </TouchableOpacity>
             </View>
+            {!!error && <Text style={styles.error}>{error}</Text>}
             <TouchableOpacity
               style={styles.btn}
               activeOpacity={0.7}
@@ -158,5 +165,12 @@ const styles = StyleSheet.create({
   passwordText: {
     fontFamily: "Roboto-Regulat",
     fontSize: 16,
+  },
+  error: {
+    textAlign: "center",
+    color: "red",
+    fontFamily: "Roboto-Regulat",
+    fontSize: 16,
+    marginTop: 10,
   },
 });

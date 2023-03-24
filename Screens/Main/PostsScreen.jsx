@@ -2,14 +2,27 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 const PostsScreen = ({ route }) => {
-  const { email } = route.params;
+  if (route.params) {
+    const { email } = route.params;
+    return (
+      <View style={styles.container}>
+        <View style={styles.user}>
+          <View style={styles.avatar}></View>
+          <View>
+            <Text style={styles.name}>User name</Text>
+            <Text style={styles.email}>User email {email}</Text>
+          </View>
+        </View>
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
       <View style={styles.user}>
         <View style={styles.avatar}></View>
         <View>
           <Text style={styles.name}>User name</Text>
-          <Text style={styles.email}>User email {email}</Text>
+          <Text style={styles.email}>User email</Text>
         </View>
       </View>
     </View>
