@@ -55,7 +55,7 @@ const HomeScreen = ({ navigation }) => {
               <View style={{ paddingHorizontal: 15 }}>
                 <Image
                   source={require("../../assets/images/log-out.png")}
-                  style={{ width: 24, height: 24 }}
+                  style={{ width: 20, height: 20 }}
                 />
               </View>
             </TouchableWithoutFeedback>
@@ -69,20 +69,12 @@ const HomeScreen = ({ navigation }) => {
           tabBarIcon: ({ focused, size, color }) => (
             <MaterialIcons name="add" size={size} color={color} />
           ),
-          // tabBarStyle: { display: "none" },
           title: "Создать публикацию",
-          headerLeft: () => (
-            <TouchableWithoutFeedback
-              onPress={() => navigation.navigate("Posts")}
-            >
-              <View style={{ paddingHorizontal: 15 }}>
-                <Image
-                  source={require("../../assets/images/arrow-left.png")}
-                  style={{ width: 24, height: 24 }}
-                />
-              </View>
-            </TouchableWithoutFeedback>
-          ),
+          headerTitleStyle: {
+            marginLeft: 50,
+            fontFamily: "Roboto-Bold",
+            fontSize: 17,
+          },
           tabBarStyle: { display: "none" },
         }}
         name="Create"

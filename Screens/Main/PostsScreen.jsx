@@ -1,62 +1,44 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
+import DefaultScreenPosts from "../Nested/DefaultScreenPosts";
+import CommentsScreen from "../Nested/CommentsScreen";
+import MapScreen from "../Nested/MapScreen";
 
-const PostsScreen = ({ route }) => {
-  if (route.params) {
-    const { email } = route.params;
-    return (
-      <View style={styles.container}>
-        <View style={styles.user}>
-          <View style={styles.avatar}></View>
-          <View>
-            <Text style={styles.name}>User name</Text>
-            <Text style={styles.email}>User email {email}</Text>
-          </View>
-        </View>
-      </View>
-    );
-  }
+const NestedScreen = createStackNavigator();
+
+const PostsScreen = () => {
   return (
-    <View style={styles.container}>
-      <View style={styles.user}>
-        <View style={styles.avatar}></View>
-        <View>
-          <Text style={styles.name}>User name</Text>
-          <Text style={styles.email}>User email</Text>
-        </View>
-      </View>
-    </View>
+    <NestedScreen.Navigator
+      screenOptions={{
+        headerStyle: {
+          borderBottomWidth: 1,
+          borderColor: "#E8E8E8",
+          backgroundColor: "#FFFFFF",
+        },
+        headerTitleStyle: {
+          textAlign: "center",
+          fontFamily: "Roboto-Bold",
+          fontSize: 17,
+        },
+      }}
+    >
+      <NestedScreen.Screen
+        name="DefaultScreen"
+        component={DefaultScreenPosts}
+        options={{ headerShown: false }}
+      />
+      <NestedScreen.Screen
+        name="Comments"
+        component={CommentsScreen}
+        options={{ title: "Комментарии" }}
+      />
+      <NestedScreen.Screen
+        name="Map"
+        component={MapScreen}
+        options={{ title: "Карта" }}
+      />
+    </NestedScreen.Navigator>
   );
 };
 
 export default PostsScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-    paddingHorizontal: 16,
-    paddingTop: 32,
-  },
-  user: {
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  avatar: {
-    width: 60,
-    height: 60,
-    borderWidth: 1,
-    borderColor: "#E8E8E8",
-    borderRadius: 16,
-    marginRight: 8,
-  },
-  name: {
-    fontFamily: "Roboto-Bold",
-    fontSize: 13,
-  },
-  email: {
-    fontFamily: "Roboto-Regulat",
-    fontSize: 11,
-  },
-});

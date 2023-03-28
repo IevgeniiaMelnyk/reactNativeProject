@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -10,6 +10,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ImageBackground,
+  ScrollView,
 } from "react-native";
 
 import { Button } from "react-native-web";
@@ -32,7 +33,7 @@ const LoginScreen = ({ navigation }) => {
       const user = { email, password };
       setEmail("");
       setPassword("");
-      navigation.navigate("Home", { screen: "Posts", params: user });
+      navigation.navigate("Home", { screen: "DefaultScreen", params: user });
     }
   };
 
@@ -46,14 +47,14 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <ImageBackground
-      style={{ flex: 1 }}
-      source={require("../../assets/images/Photo%20BG.jpg")}
-    >
-      <TouchableWithoutFeedback onPress={keyboardHide}>
-        <KeyboardAvoidingView
-          style={styles.container}
-          behavior={Platform.OS == "ios" ? "padding" : "height"}
+    <TouchableWithoutFeedback onPress={keyboardHide}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+      >
+        <ImageBackground
+          style={{ flex: 1, justifyContent: "flex-end" }}
+          source={require("../../assets/images/Photo%20BG.jpg")}
         >
           <View
             style={{
@@ -98,9 +99,9 @@ const LoginScreen = ({ navigation }) => {
               <Text style={styles.text}>Нет аккаунта? Зарегистрироваться</Text>
             </TouchableOpacity>
           </View>
-        </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
-    </ImageBackground>
+        </ImageBackground>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -109,7 +110,7 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-end",
+    backgroundColor: "#fff",
   },
   form: {
     backgroundColor: "#fff",

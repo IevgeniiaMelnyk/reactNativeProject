@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,7 +9,31 @@ import {
   Image,
 } from "react-native";
 
+import * as MediaLibrary from "expo-media-library";
+import * as ImagePicker from "expo-image-picker";
+
 const ProfileScreen = ({ navigation }) => {
+  const [photo, setPhoto] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      MediaLibrary.requestPermissionsAsync();
+    })();
+  }, []);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setPhoto(result.assets[0].uri);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -23,14 +47,38 @@ const ProfileScreen = ({ navigation }) => {
         <View style={styles.box}>
           <View style={styles.avatarBox}>
             <View style={styles.avatar}>
-              <TouchableOpacity style={styles.btnPlus} activeOpacity={0.7}>
-                <View>
-                  <Image
-                    source={require("../../assets/images/del.png")}
-                    style={{ width: 40, height: 40 }}
-                  />
-                </View>
-              </TouchableOpacity>
+              {photo ? (
+                <Image source={{ uri: photo }} style={styles.img} />
+              ) : (
+                <View style={styles.noAvatar}></View>
+              )}
+              {!photo ? (
+                <TouchableOpacity
+                  style={styles.btnPlus}
+                  activeOpacity={0.7}
+                  onPress={pickImage}
+                >
+                  <View>
+                    <Image
+                      source={require("../../assets/images/add.png")}
+                      style={{ width: 25, height: 25 }}
+                    />
+                  </View>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={{ ...styles.btnPlus, left: 100, top: 70 }}
+                  activeOpacity={0.7}
+                  onPress={() => setPhoto(null)}
+                >
+                  <View>
+                    <Image
+                      source={require("../../assets/images/del.png")}
+                      style={{ width: 40, height: 40 }}
+                    />
+                  </View>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
           <TouchableWithoutFeedback
@@ -76,12 +124,22 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 16,
+  },
+  noAvatar: {
     backgroundColor: "#F6F6F6",
+    width: "100%",
+    height: "100%",
+    borderRadius: 16,
+  },
+  img: {
+    width: 120,
+    height: 120,
+    borderRadius: 16,
   },
   btnPlus: {
     position: "absolute",
-    top: 70,
-    left: 100,
+    top: 80,
+    left: 107,
   },
   autBtn: {
     position: "absolute",

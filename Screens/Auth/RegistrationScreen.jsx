@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -13,8 +13,12 @@ import {
   Image,
 } from "react-native";
 
+import * as MediaLibrary from "expo-media-library";
+import * as ImagePicker from "expo-image-picker";
+
 const RegistrationScreen = ({ navigation, route }) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [photo, setPhoto] = useState(null);
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,6 +29,12 @@ const RegistrationScreen = ({ navigation, route }) => {
   const emailHandler = (text) => setEmail(text);
   const passwordHandler = (text) => setPassword(text);
 
+  useEffect(() => {
+    (async () => {
+      MediaLibrary.requestPermissionsAsync();
+    })();
+  }, []);
+
   const onLogin = () => {
     if (login.trim() === "" || email.trim() === "" || password.trim() === "") {
       setError("Пожалуйста, заполните все поля для ввода");
@@ -34,7 +44,7 @@ const RegistrationScreen = ({ navigation, route }) => {
       setLogin("");
       setEmail("");
       setPassword("");
-      navigation.navigate("Home", { screen: "Posts", params: user });
+      navigation.navigate("Home", { screen: "DefaultScreen", params: user });
     }
   };
 
@@ -47,15 +57,28 @@ const RegistrationScreen = ({ navigation, route }) => {
     setIsShowKeyboard(false);
   };
 
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setPhoto(result.assets[0].uri);
+    }
+  };
+
   return (
-    <ImageBackground
-      style={{ flex: 1 }}
-      source={require("../../assets/images/Photo%20BG.jpg")}
-    >
-      <TouchableWithoutFeedback onPress={keyboardHide}>
-        <KeyboardAvoidingView
-          style={styles.container}
-          behavior={Platform.OS == "ios" ? "padding" : "height"}
+    <TouchableWithoutFeedback onPress={keyboardHide}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+      >
+        <ImageBackground
+          style={{ flex: 1, justifyContent: "flex-end" }}
+          source={require("../../assets/images/Photo%20BG.jpg")}
         >
           <View
             style={{
@@ -65,14 +88,38 @@ const RegistrationScreen = ({ navigation, route }) => {
           >
             <View style={styles.avatarBox}>
               <View style={styles.avatar}>
-                <TouchableOpacity style={styles.btnPlus} activeOpacity={0.7}>
-                  <View>
-                    <Image
-                      source={require("../../assets/images/add.png")}
-                      style={{ width: 25, height: 25 }}
-                    />
-                  </View>
-                </TouchableOpacity>
+                {photo ? (
+                  <Image source={{ uri: photo }} style={styles.img} />
+                ) : (
+                  <View style={styles.noAvatar}></View>
+                )}
+                {!photo ? (
+                  <TouchableOpacity
+                    style={styles.btnPlus}
+                    activeOpacity={0.7}
+                    onPress={pickImage}
+                  >
+                    <View>
+                      <Image
+                        source={require("../../assets/images/add.png")}
+                        style={{ width: 25, height: 25 }}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    style={{ ...styles.btnPlus, left: 100, top: 70 }}
+                    activeOpacity={0.7}
+                    onPress={() => setPhoto(null)}
+                  >
+                    <View>
+                      <Image
+                        source={require("../../assets/images/del.png")}
+                        style={{ width: 40, height: 40 }}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                )}
               </View>
             </View>
             <Text style={styles.title}>Регистрация</Text>
@@ -119,9 +166,9 @@ const RegistrationScreen = ({ navigation, route }) => {
               <Text style={styles.text}>Уже есть аккаунт? Войти</Text>
             </TouchableOpacity>
           </View>
-        </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
-    </ImageBackground>
+        </ImageBackground>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -130,7 +177,7 @@ export default RegistrationScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-end",
+    backgroundColor: "#fff",
   },
   form: {
     backgroundColor: "#fff",
@@ -191,7 +238,17 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 16,
+  },
+  noAvatar: {
     backgroundColor: "#F6F6F6",
+    width: "100%",
+    height: "100%",
+    borderRadius: 16,
+  },
+  img: {
+    width: 120,
+    height: 120,
+    borderRadius: 16,
   },
   btnPlus: {
     position: "absolute",
