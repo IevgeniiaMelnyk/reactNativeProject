@@ -128,26 +128,27 @@ const CreatePostsScreen = ({ navigation }) => {
 
   return (
     <>
-      <TouchableWithoutFeedback
-        onPress={() => {
-          navigation.navigate("Posts");
-          cameraReady();
-        }}
-      >
-        <View
-          style={{
-            position: "absolute",
-            top: -38,
-            zIndex: 100,
-            paddingHorizontal: 15,
+      <View style={styles.header}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            navigation.navigate("Posts");
+            cameraReady();
           }}
         >
-          <Image
-            source={require("../../assets/images/arrow-left.png")}
-            style={{ width: 23, height: 23 }}
-          />
-        </View>
-      </TouchableWithoutFeedback>
+          <View
+            style={{
+              paddingHorizontal: 15,
+              paddingVertical: 14,
+            }}
+          >
+            <Image
+              source={require("../../assets/images/arrow-left.png")}
+              style={{ width: 23, height: 23 }}
+            />
+          </View>
+        </TouchableWithoutFeedback>
+        <Text style={styles.headerText}>Создать публикацию</Text>
+      </View>
       <ScrollView style={styles.container}>
         {cameraOn ? (
           <Camera style={styles.camera} ref={cameraRef}>
@@ -281,6 +282,21 @@ const CreatePostsScreen = ({ navigation }) => {
 export default CreatePostsScreen;
 
 const styles = StyleSheet.create({
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "flex-end",
+    height: 90,
+    borderBottomWidth: 2,
+    borderBottomColor: "#E8E8E8",
+    backgroundColor: "#fff",
+  },
+  headerText: {
+    marginBottom: 15,
+    marginLeft: 20,
+    fontFamily: "Roboto-Bold",
+    fontSize: 17,
+  },
   container: {
     flex: 1,
     backgroundColor: "#FFFFFF",

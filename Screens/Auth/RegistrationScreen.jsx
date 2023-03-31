@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import {
   StyleSheet,
   View,
@@ -16,6 +17,8 @@ import {
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
 
+import { authSignUpUser } from "../../redux/auth/authOperations";
+
 const RegistrationScreen = ({ navigation, route }) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [photo, setPhoto] = useState(null);
@@ -24,6 +27,8 @@ const RegistrationScreen = ({ navigation, route }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [hidePass, setHidePass] = useState(true);
+
+  const dispatch = useDispatch();
 
   const loginHandler = (text) => setLogin(text);
   const emailHandler = (text) => setEmail(text);
@@ -41,10 +46,11 @@ const RegistrationScreen = ({ navigation, route }) => {
     } else {
       setError(null);
       const user = { login, email, password };
+      dispatch(authSignUpUser(user));
       setLogin("");
       setEmail("");
       setPassword("");
-      navigation.navigate("Home", { screen: "DefaultScreen", params: user });
+      // navigation.navigate("Home", { screen: "DefaultScreen", params: user });
     }
   };
 

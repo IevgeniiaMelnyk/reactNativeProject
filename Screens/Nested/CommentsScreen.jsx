@@ -11,7 +11,7 @@ import {
   ScrollView,
 } from "react-native";
 
-const CommentsScreen = ({ route }) => {
+const CommentsScreen = ({ route, navigation }) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [photo, setPhoto] = useState(null);
   const [comment, setComment] = useState("");
@@ -34,66 +34,99 @@ const CommentsScreen = ({ route }) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={keyboardHide}>
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS == "ios" ? "padding" : "height"}
-      >
-        <ScrollView>
-          <View>
-            {photo && (
-              <View>
-                <View style={styles.imgBox}>
-                  <Image style={styles.img} source={{ uri: photo }} />
-                </View>
-              </View>
-            )}
-            <Text>
-              If you don't receive the locations in the emulator, you may have
-              to turn off "Improve Location Accuracy" in Settings - Location in
-              the emulator. This will turn off Wi-Fi location and only use GPS.
-              Then you can manipulate the location with GPS data through the
-              emulator. If you don't receive the locations in the emulator, you
-              may have to turn off "Improve Location Accuracy" in Settings -
-              Location in the emulator. This will turn off Wi-Fi location and
-              only use GPS. Then you can manipulate the location with GPS data
-              through the emulator. If you don't receive the locations in the
-              emulator, you may have to turn off "Improve Location Accuracy" in
-              Settings - Location in the emulator. This will turn off Wi-Fi
-              location and only use GPS. Then you can manipulate the location
-              with GPS data through the emulator.
-            </Text>
-
-            <TextInput
-              value={comment}
-              onChangeText={commentHandler}
-              placeholder="Комментировать..."
-              style={
-                !isShowKeyboard
-                  ? styles.input
-                  : { ...styles.input, marginBottom: 160 }
-              }
-              onFocus={onFocus}
+    <>
+      <View style={styles.header}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            navigation.navigate("DefaultScreen");
+          }}
+        >
+          <View
+            style={{
+              paddingHorizontal: 15,
+              paddingVertical: 14,
+            }}
+          >
+            <Image
+              source={require("../../assets/images/arrow-left.png")}
+              style={{ width: 23, height: 23 }}
             />
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
+        <Text style={styles.headerText}>Комментарии</Text>
+      </View>
+      <ScrollView>
+        <TouchableWithoutFeedback onPress={keyboardHide}>
+          <KeyboardAvoidingView
+            style={styles.container}
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
+          >
+            <View>
+              {photo && (
+                <View>
+                  <View style={styles.imgBox}>
+                    <Image style={styles.img} source={{ uri: photo }} />
+                  </View>
+                </View>
+              )}
+              <Text>
+                If you don't receive the locations in the emulator, you may have
+                to turn off "Improve Location Accuracy" in Settings - Location
+                in the emulator. This will turn off Wi-Fi location and only use
+                GPS. Then you can manipulate the location with GPS data through
+                the emulator. If you don't receive the locations in the
+                emulator, you may have to turn off "Improve Location Accuracy"
+                in Settings - Location in the emulator. This will turn off Wi-Fi
+                location and only use GPS. Then you can manipulate the location
+                with GPS data through the emulator. If you don't receive the
+                locations in the emulator, you may have to turn off "Improve
+                Location Accuracy" in Settings - Location in the emulator. This
+                will turn off Wi-Fi location and only use GPS. Then you can
+                manipulate the location with GPS data through the emulator.
+              </Text>
+            </View>
+          </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
+      </ScrollView>
+      <View style={styles.inputBox}>
+        <TextInput
+          value={comment}
+          onChangeText={commentHandler}
+          placeholder="Комментировать..."
+          style={styles.input}
+          onFocus={onFocus}
+        />
+      </View>
+    </>
   );
 };
 export default CommentsScreen;
 
 const styles = StyleSheet.create({
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "flex-end",
+    height: 90,
+    borderBottomWidth: 2,
+    borderBottomColor: "#E8E8E8",
+    backgroundColor: "#fff",
+  },
+  headerText: {
+    marginBottom: 15,
+    marginLeft: 20,
+    fontFamily: "Roboto-Bold",
+    fontSize: 17,
+  },
   container: {
-    backgroundColor: "#FFFFFF",
     paddingHorizontal: 16,
     paddingTop: 32,
-    paddingBottom: 60,
+    paddingBottom: 16,
+    marginBottom: 130,
   },
   imgBox: {
     height: 240,
-    marginBottom: 8,
-    marginBottom: 32,
+    marginBottom: 22,
   },
   img: {
     width: "100%",
@@ -101,14 +134,21 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     resizeMode: "cover",
   },
-
+  inputBox: {
+    position: "absolute",
+    bottom: 60,
+    width: "100%",
+    paddingHorizontal: 16,
+    backgroundColor: "#fff",
+  },
   input: {
     height: 50,
+    width: "100%",
     padding: 16,
     borderWidth: 1,
     borderColor: "#E8E8E8",
     borderRadius: 8,
-    marginTop: 32,
+    marginTop: 16,
     marginBottom: 16,
     backgroundColor: "#F6F6F6",
     fontFamily: "Roboto-Regulat",

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import {
   StyleSheet,
   View,
@@ -13,7 +14,7 @@ import {
   ScrollView,
 } from "react-native";
 
-import { Button } from "react-native-web";
+import { authSingInUser } from "../../redux/auth/authOperations";
 
 const LoginScreen = ({ navigation }) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
@@ -21,6 +22,8 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [hidePass, setHidePass] = useState(true);
+
+  const dispatch = useDispatch();
 
   const emailHandler = (text) => setEmail(text);
   const passwordHandler = (text) => setPassword(text);
@@ -31,9 +34,10 @@ const LoginScreen = ({ navigation }) => {
     } else {
       setError(null);
       const user = { email, password };
+      dispatch(authSingInUser(user));
       setEmail("");
       setPassword("");
-      navigation.navigate("Home", { screen: "DefaultScreen", params: user });
+      // navigation.navigate("Home", { screen: "DefaultScreen", params: user });
     }
   };
 
