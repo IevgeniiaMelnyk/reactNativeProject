@@ -21,7 +21,9 @@ import { authSignUpUser } from "../../redux/auth/authOperations";
 
 const RegistrationScreen = ({ navigation, route }) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-  const [photo, setPhoto] = useState(null);
+  const [photo, setPhoto] = useState(
+    "https://files.fm/thumb_show.php?i=c6e28ndjn"
+  );
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,17 +42,24 @@ const RegistrationScreen = ({ navigation, route }) => {
     })();
   }, []);
 
-  const onLogin = () => {
-    if (login.trim() === "" || email.trim() === "" || password.trim() === "") {
-      setError("Пожалуйста, заполните все поля для ввода");
-    } else {
-      setError(null);
-      const user = { login, email, password };
-      dispatch(authSignUpUser(user));
-      setLogin("");
-      setEmail("");
-      setPassword("");
-      // navigation.navigate("Home", { screen: "DefaultScreen", params: user });
+  const onLogin = async () => {
+    try {
+      if (
+        login.trim() === "" ||
+        email.trim() === "" ||
+        password.trim() === ""
+      ) {
+        setError("Пожалуйста, заполните все поля для ввода");
+      } else {
+        setError(null);
+        const user = { login, email, password, photo };
+        dispatch(authSignUpUser(user));
+        setLogin("");
+        setEmail("");
+        setPassword("");
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -70,7 +79,6 @@ const RegistrationScreen = ({ navigation, route }) => {
       aspect: [4, 3],
       quality: 1,
     });
-
     if (!result.canceled) {
       setPhoto(result.assets[0].uri);
     }

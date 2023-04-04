@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   StyleSheet,
@@ -11,7 +11,6 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ImageBackground,
-  ScrollView,
 } from "react-native";
 
 import { authSingInUser } from "../../redux/auth/authOperations";
@@ -37,7 +36,6 @@ const LoginScreen = ({ navigation }) => {
       dispatch(authSingInUser(user));
       setEmail("");
       setPassword("");
-      // navigation.navigate("Home", { screen: "DefaultScreen", params: user });
     }
   };
 
