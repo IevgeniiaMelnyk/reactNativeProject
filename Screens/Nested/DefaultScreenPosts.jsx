@@ -8,7 +8,7 @@ import {
   Image,
   TouchableWithoutFeedback,
 } from "react-native";
-import ItemDefaultScreen from "../../components/ItemDefaultScreen";
+import Item from "../../components/Item";
 import FlatListHeaderDefaultScreen from "../../components/FlatListHeaderDefaultScreen";
 import { db } from "../../firebase/config";
 import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
@@ -75,7 +75,7 @@ const DefaultScreenPosts = ({ navigation }) => {
             data={posts}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <ItemDefaultScreen
+              <Item
                 item={item}
                 goToComments={() => goToComments(item)}
                 goToMap={() => goToMap(item)}

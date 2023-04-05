@@ -146,7 +146,7 @@ const CreatePostsScreen = ({ navigation }) => {
           place,
           loc,
           date,
-          likes: 0,
+          likes: [],
         });
         console.log("Document written with ID: ", createPost.id);
       } else {

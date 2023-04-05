@@ -116,20 +116,20 @@ const RegistrationScreen = ({ navigation, route }) => {
                     <View>
                       <Image
                         source={require("../../assets/images/add.png")}
-                        style={{ width: 25, height: 25 }}
+                        style={{ width: 30, height: 30 }}
                       />
                     </View>
                   </TouchableOpacity>
                 ) : (
                   <TouchableOpacity
-                    style={{ ...styles.btnPlus, left: 100, top: 70 }}
+                    style={styles.btnPlus}
                     activeOpacity={0.7}
                     onPress={() => setPhoto(null)}
                   >
                     <View>
                       <Image
                         source={require("../../assets/images/del.png")}
-                        style={{ width: 40, height: 40 }}
+                        style={{ width: 30, height: 30 }}
                       />
                     </View>
                   </TouchableOpacity>
@@ -266,8 +266,10 @@ const styles = StyleSheet.create({
   },
   btnPlus: {
     position: "absolute",
-    top: 80,
-    left: 107,
+    top: 75,
+    left: 105,
+    backgroundColor: "rgba(0,0,0, 0.2)",
+    borderRadius: 50,
   },
   passwordBtn: {
     position: "absolute",

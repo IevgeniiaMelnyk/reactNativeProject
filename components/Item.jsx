@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import {
   collection,
   doc,
+  getDoc,
   query,
   onSnapshot,
   updateDoc,
-  increment,
 } from "firebase/firestore";
 import { db } from "../firebase/config";
 
-const ItemProfileScreen = ({ item, goToComments, goToMap }) => {
+const Item = ({ item, goToComments, goToMap }) => {
   const [commentsAmount, setCommentsAmount] = useState(null);
   const [toggle, setToggle] = useState(true);
+  const { userId } = useSelector((store) => store.auth);
   const id = item.id;
 
   useEffect(() => {
@@ -25,6 +27,24 @@ const ItemProfileScreen = ({ item, goToComments, goToMap }) => {
       unsubscribe();
     };
   }, [id]);
+
+  const createLike = async (id, userId) => {
+    try {
+      const postRef = doc(db, "posts", id);
+      const result = await getDoc(postRef);
+      const likesArr = result.data().likes;
+      const like = likesArr.find((el) => el === userId);
+      if (like) {
+        let newLikesArr = likesArr.filter((el) => el !== userId);
+        await updateDoc(postRef, { likes: newLikesArr });
+      } else {
+        likesArr.push(userId);
+        await updateDoc(postRef, { likes: likesArr });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <View>
@@ -45,13 +65,18 @@ const ItemProfileScreen = ({ item, goToComments, goToMap }) => {
               <Text style={styles.text}>{commentsAmount}</Text>
             </View>
           </TouchableOpacity>
-          <View style={styles.iconBox}>
-            <Image
-              source={require("../assets/images/thumbs-up.png")}
-              style={{ width: 24, height: 24, marginRight: 4 }}
-            />
-            <Text style={styles.text}>{item.likes}</Text>
-          </View>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => createLike(id, userId)}
+          >
+            <View style={styles.iconBox}>
+              <Image
+                source={require("../assets/images/thumbs-up.png")}
+                style={{ width: 24, height: 24, marginRight: 4 }}
+              />
+              <Text style={styles.text}>{item.likes.length}</Text>
+            </View>
+          </TouchableOpacity>
         </View>
         <TouchableOpacity activeOpacity={0.7} onPress={goToMap}>
           <View style={styles.iconBox}>
@@ -74,7 +99,7 @@ const ItemProfileScreen = ({ item, goToComments, goToMap }) => {
   );
 };
 
-export default ItemProfileScreen;
+export default Item;
 
 const styles = StyleSheet.create({
   imgBox: {

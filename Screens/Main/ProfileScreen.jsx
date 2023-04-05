@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { View, StyleSheet, ImageBackground, FlatList } from "react-native";
 import FlatListHeaderProfileScreen from "../../components/FlatListHeaderProfileScreen";
-import ItemProfileScreen from "../../components/ItemProfileScreen";
+import Item from "../../components/Item";
 
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
@@ -104,7 +104,7 @@ const ProfileScreen = ({ navigation }) => {
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View style={styles.list}>
-              <ItemProfileScreen
+              <Item
                 item={item}
                 goToComments={() => goToComments(item)}
                 goToMap={() => goToMap(item)}
