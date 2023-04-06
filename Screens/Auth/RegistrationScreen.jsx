@@ -40,6 +40,18 @@ const RegistrationScreen = ({ navigation, route }) => {
     (async () => {
       MediaLibrary.requestPermissionsAsync();
     })();
+
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setIsShowKeyboard(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setIsShowKeyboard(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
   }, []);
 
   const onLogin = async () => {
